@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gas Mileage Tracker</title>
+</head>
+<body>
+    <h2>Gas Mileage Tracker</h2>
+    <form id="dataForm">
+        Date: <input type="text" id="date"><br>
+        Odometer Reading (miles): <input type="number" id="odometer"><br>
+        Gallons Filled: <input type="number" id="gallons"><br>
+        Price per Gallon: <input type="number" id="price_per_gallon"><br>
+        Total Cost: <input type="number" id="total_cost"><br>
+        <button type="submit">Submit Data</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = {
+                date: document.getElementById('date').value,
+                odometer: parseFloat(document.getElementById('odometer').value),
+                gallons: parseFloat(document.getElementById('gallons').value),
+                price_per_gallon: parseFloat(document.getElementById('price_per_gallon').value),
+                total_cost: parseFloat(document.getElementById('total_cost').value)
+            };
+
+            fetch('http://localhost:5000/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('results').innerHTML = `Distance traveled: ${data.distance} miles, Mileage: ${data.mileage} miles per gallon`;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
