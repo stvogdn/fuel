@@ -1,6 +1,17 @@
+"""Track fuel mileage"""
+import decimal
 import sqlite3
 
-def insert_data(date, odometer, gallons, price_per_gallon, total_cost, distance, mileage):
+# insert record into db
+def insert_data(
+        date: str,
+        odometer: int,
+        gallons: str,
+        price_per_gallon: str,
+        total_cost: decimal,
+        distance: decimal,
+        mileage: decimal) -> None:
+    """insert record into db"""
     conn = sqlite3.connect('gas_mileage.db')
     cursor = conn.cursor()
     cursor.execute('''
@@ -10,7 +21,9 @@ def insert_data(date, odometer, gallons, price_per_gallon, total_cost, distance,
     conn.commit()
     conn.close()
 
+# get most recent odometer reading from db
 def get_last_odometer():
+    """get last odometer reading"""
     conn = sqlite3.connect('gas_mileage.db')
     cursor = conn.cursor()
     cursor.execute('SELECT odometer FROM mileage_data ORDER BY id DESC LIMIT 1')
@@ -18,13 +31,15 @@ def get_last_odometer():
     conn.close()
     return result[0] if result else None
 
+# main
 def main():
+    """Main"""
     # Accept inputs
     date = input("Enter the date (YYYY-MM-DD): ")
-    odometer = float(input("Enter the odometer reading (miles): "))
-    gallons = float(input("Enter the gallons filled: "))
-    price_per_gallon = float(input("Enter the price per gallon: "))
-    total_cost = float(input("Enter the total cost: "))
+    odometer = decimal.Decimal(input("Enter the odometer reading (miles): "))
+    gallons = decimal.Decimal(input("Enter the gallons filled: "))
+    price_per_gallon = decimal.Decimal(input("Enter the price per gallon: "))
+    total_cost = decimal.Decimal(input("Enter the total cost: "))
 
     # Calculate distance traveled since the last entry and mileage
     last_odometer = get_last_odometer()

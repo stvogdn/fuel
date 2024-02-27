@@ -1,3 +1,4 @@
+"""create sqlite db"""
 import sqlite3
 
 # Connect to SQLite database (or create it if it doesn't exist)
@@ -6,15 +7,17 @@ cursor = conn.cursor()
 
 # Create a table to store the data
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS mileage_data (
-    id INTEGER PRIMARY KEY,
-    date TEXT NOT NULL,
-    odometer REAL NOT NULL,
-    gallons REAL NOT NULL,
-    price_per_gallon REAL NOT NULL,
-    total_cost REAL NOT NULL,
-    distance REAL,
-    mileage REAL
+CREATE TABLE IF NOT EXISTS "mileage_data" (
+	"id"	INTEGER,
+	"date"	TEXT NOT NULL,
+	"odometer"	INTEGER NOT NULL,
+	"gallons"	REAL NOT NULL,
+	"price_per_gallon"	NUMERIC NOT NULL,
+	"total_cost"	NUMERIC NOT NULL,
+	"location"	TEXT,
+	"distance"	INTEGER,
+	"mileage"	INTEGER,
+	PRIMARY KEY("id")
 )
 ''')
 
